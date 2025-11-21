@@ -75,6 +75,24 @@ jobs:
           sudo mv argocd /usr/local/bin/argocd
           argocd version --client
 
+      - name: Ensure argocd repo and app
+        shell: bash
+        run: |
+          #Connect to ArgoCd repo
+          repo="https://github.com/gokhan-gurbuz/${{values.app_name}}.git"
+          argocd repo list | grep -q $repo || argocd repo add $repo
+
+          #Ensure  argocd app
+          argocd app get ${{values.app_name}} || argocd app create ${{values.app_name}} \
+            --repo $repo \
+            --path charts/${{values.app_name}} \
+            --dest-namespace ${{values.app_env}}  \
+            --dest-server https://kubernetes.default.svc \
+            --values values-${{values.app_env}}.yaml \
+            --revision main \
+            --sync-policy auto \
+            --sync-option CreateNamespace=true \
+
       - name: ArgoCd app sync
         shell: bash
         run: |
@@ -84,3 +102,4 @@ jobs:
           --username admin \
           --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }} && \
           argocd app sync ${{values.app_name}}
+          argocd app wait ${{values.app_name}} --timeout 180

@@ -23,7 +23,7 @@ ingress:
   className: "nginx"
   annotations: {}
   hosts:
-    - host: python-app.roofstacks.com
+    - host: ${{values.app_name}}-${{values.app_env}}.roofstacks.com
       paths:
         - path: /
           pathType: Prefix
