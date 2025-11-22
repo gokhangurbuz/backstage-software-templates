@@ -70,7 +70,7 @@ jobs:
       - name: Install argocd
         shell: bash
         run: |
-          curl -ksSL -o argocd https://argocd.roofstacks.com:8443/download/argocd-linux-arm64
+          curl -ksSL -o argocd https://argocd.roofstacks.com/download/argocd-linux-arm64
           chmod +x argocd
           sudo mv ./argocd /usr/local/bin/argocd
 
