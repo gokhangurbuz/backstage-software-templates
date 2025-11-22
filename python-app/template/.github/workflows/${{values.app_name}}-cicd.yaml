@@ -70,14 +70,14 @@ jobs:
       - name: Install argocd
         shell: bash
         run: |
-          curl -ksSL -o argocd https://argocd.roofstacks.com/download/argocd-linux-arm64
+          curl -ksSL -o argocd https://argocd-server.argocd.svc.cluster.local/download/argocd-linux-arm64
           chmod +x argocd
           sudo mv ./argocd /usr/local/bin/argocd
 
       - name: argocd login
         shell: bash
         run: |
-          argocd login argocd.roofstacks \
+          argocd login argocd-server.argocd \
             --insecure  \
             --grpc-web \
             --username admin \
